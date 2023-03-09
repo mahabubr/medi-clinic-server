@@ -23,18 +23,54 @@ async function run() {
     try {
         const database = client.db('Medi-Clinic')
 
+        const roleCollection = database.collection('role')
         const userCollection = database.collection('user')
+        const doctorCollection = database.collection('doctor')
+        const hospitalCollection = database.collection('hospital')
+        const pharmacyCollection = database.collection('pharmacy')
 
+        app.post('/role', async (req, res) => {
+            const query = req.body
+            const result = await roleCollection.insertOne(query)
+            res.send(result)
+        })
         app.post('/user', async (req, res) => {
             const query = req.body
             const result = await userCollection.insertOne(query)
             res.send(result)
         })
-
-        app.get('/user', async (req, res) => {
-            const query = req.query
-            const result = await userCollection.find(query).toArray()
+        app.post('/doctor', async (req, res) => {
+            const query = req.body
+            const result = await doctorCollection.insertOne(query)
             res.send(result)
+        })
+        app.post('/hospital', async (req, res) => {
+            const query = req.body
+            const result = await hospitalCollection.insertOne(query)
+            res.send(result)
+        })
+        app.post('/pharmacy', async (req, res) => {
+            const query = req.body
+            const result = await pharmacyCollection.insertOne(query)
+            res.send(result)
+        })
+
+
+        app.get('/role-filter', async (req, res) => {
+            const query = req.query.email
+            const filter = { email: query }
+            const result = await roleCollection.findOne(filter)
+            res.send(result)
+        })
+
+        app.get('/hospital', async (req, res) => {
+            const query = {}
+            const result = await hospitalCollection.find(query).toArray()
+            res.send(result)
+        })
+
+        app.put('/hospital-room', async (req, res) => {
+            const data = req.data
         })
 
     }
